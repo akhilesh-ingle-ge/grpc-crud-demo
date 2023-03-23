@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	pb "grpc-crud/proto"
 
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -23,10 +25,10 @@ type Movie struct {
 const port = ":8080"
 
 var DB *gorm.DB
-var dsn = "postgres://postgres:12345@localhost:5432/grpc?sslmode=disable"
 
+// Connect to DB
 func SetupDB() {
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(os.Getenv("DSN")), &gorm.Config{})
 	if err != nil {
 		log.Printf("Failed to connect to database: %v\n", err)
 	}
@@ -36,6 +38,10 @@ func SetupDB() {
 }
 
 func init() {
+	err := godotenv.Load("../.env")
+	if err != nil {
+		panic("Failed to load .env file")
+	}
 	SetupDB()
 }
 

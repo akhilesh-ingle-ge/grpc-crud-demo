@@ -31,6 +31,7 @@ func main() {
 
 	router := gin.Default()
 
+	// Get all movies
 	router.GET("/movies", func(ctx *gin.Context) {
 		res, err := client.GetMovies(ctx, &pb.GetMoviesRequest{})
 		if err != nil {
@@ -45,6 +46,7 @@ func main() {
 		})
 	})
 
+	// Get a movie record
 	router.GET("/movie/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 		res, err := client.GetMovie(ctx, &pb.GetMovieRequest{Id: id})
@@ -60,6 +62,7 @@ func main() {
 		})
 	})
 
+	// Create a movie record
 	router.POST("/movie", func(ctx *gin.Context) {
 		var movie Movie
 
@@ -89,6 +92,7 @@ func main() {
 		})
 	})
 
+	// Update a movie record
 	router.PUT("/movie/:id", func(ctx *gin.Context) {
 		var movie Movie
 		id := ctx.Param("id")
@@ -120,6 +124,7 @@ func main() {
 		})
 	})
 
+	// Delete a movie record
 	router.DELETE("/movie/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 		res, err := client.DeleteMovie(ctx, &pb.DeleteMovieRequest{Id: id})
